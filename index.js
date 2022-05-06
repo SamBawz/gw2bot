@@ -75,4 +75,4 @@ function checkDailies() {
 client.login(process.env.token);
 
 //Login for testing
-client.login(config.token);
+//client.login(config.token);
