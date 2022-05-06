@@ -2,7 +2,8 @@ const Discord = require('discord.js');
 const { Client, Intents } = require('discord.js');
 const client = new Client({ intents: [Intents.FLAGS.GUILDS] });
 //Config contains the login token for the bot, the prefix and the owners id
-const config = require("./config.json");
+//This file will not be present in Heroku (is in .gitignore), so comment for live purposes
+//const config = require("./config.json");
 //Required to fetch api data
 const fetch = require('node-fetch');
 
