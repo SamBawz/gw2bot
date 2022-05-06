@@ -1,0 +1,24 @@
+De bot wordt gehost op Heroku. Deze heeft dankzij veiligheids redenen geen webverbinding met github (waar de code op staat). Om dit op te lossen
+moet code gepushed worden naar github en vervolgens via git bash (command line) gepushed worden naar Heroku. Dit kan gedaan worden via de volgende stappen:
+1. Commit en en push alle veranderingen.
+2. Open git bash als administrator.
+3. Ga naar de juiste map met de commando:  cd /d/discord\ bot/gw2bot  (backslash staat voor een spatie)
+4. Log in via de commando:  heroku login
+5. Log in via de browser en cancel de commando met ctrl + c (er bestaat een bug waardoor de commando bevriest na inloggen).
+6. Benader de heroku app met de commando:  heroku git:remote -a gw2phluntbot
+7. Push de github repository naar de app met de commando:  git push heroku main
+8. PROFIT
+
+Links:
+https://www.youtube.com/watch?v=Pck6JvLCBVk&ab_channel=TheBelgiumGames (tutorial voor alles behalve git bash)
+https://dashboard.heroku.com/apps/gw2phluntbot/logs (de dashboard om de logs van de applicatie te zien en te debuggen)
+https://namespaceit.com/blog/items-could-not-be-retrieved-internal-server-error-heroku-and-github
+
+minder belangrijk
+https://www.youtube.com/watch?v=KD9OaryS1Kw&ab_channel=SalesforceDevelopers
+https://stackoverflow.com/questions/55955948/heroku-login-success-but-then-freezes
+https://apple.stackexchange.com/questions/14683/how-to-cd-to-a-directory-with-a-name-containing-spaces-in-bash
+https://stackoverflow.com/questions/39015893/heroku-deploy-error-cannot-find-module-app-index-js
+
+
+

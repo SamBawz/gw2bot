@@ -1,9 +1,6 @@
 const Discord = require('discord.js');
 const { Client, Intents } = require('discord.js');
 const client = new Client({ intents: [Intents.FLAGS.GUILDS] });
-//Config contains the login token for the bot, the prefix and the owners id
-//This file will not be present in Heroku (is in .gitignore), so comment for live purposes
-//const config = require("./config.json");
 //Required to fetch api data
 const fetch = require('node-fetch');
 
@@ -71,8 +68,11 @@ function checkDailies() {
 }
 
 //Code to let the bot log in. This code has to be at the bottom
-//Login with heroku
+//Login with heroku (live)
 client.login(process.env.token);
 
-//Login for testing
+//LOGIN LINES FOR TESTING
+//Config contains the login token for the bot, the prefix and the owners id
+//This file will not be present in Heroku (is in .gitignore), so comment for live purposes
+//const config = require("./config.json");
 //client.login(config.token);
