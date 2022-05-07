@@ -7,21 +7,22 @@ const fetch = require('node-fetch');
 let channel = "";
 client.once("ready", () => {
     //bottest channel
-    //client.channels.fetch('444237157029380096').then(targetChannel => channel = targetChannel);
+    client.channels.fetch('444237157029380096').then(targetChannel => channel = targetChannel);
     //Fractal channel
-    client.channels.fetch('750798181687885954').then(targetChannel => channel = targetChannel);
+    //client.channels.fetch('750798181687885954').then(targetChannel => channel = targetChannel);
     //checkDailies();
-    setInterval(checkTime, 600000);
+    console.log("bot started on " + date.getHours() + " hours.");
+    setInterval(checkTime, 1000);
 });
 
 const date = new Date();
 let checkCooldown = false;
 function checkTime() {
-    if (date.getHours() === 10 && !checkCooldown) {
+    if (date.getHours() === 14 && !checkCooldown) {
         checkDailies();
         checkCooldown = true;
     }
-    else if (date.getHours() > 10) {
+    else if (date.getHours() > 14) {
         checkCooldown = false;
     }
 }
@@ -59,10 +60,10 @@ function checkDailies() {
 
     //Delay because fetching the data uses async functions
     setTimeout(() => {
-        console.log(returnMessage);
         if (channel && channel.isText()) {
             channel.send(returnMessage);
-            channel.send("React with :accepted: to join, or :question: if unsure");
+            channel.send("React with  :white_check_mark:  to join, or  :question:  if unsure");
+            console.log("posting dailies...");
         }
     }, 10000);
 }
@@ -74,5 +75,7 @@ client.login(process.env.token);
 //LOGIN LINES FOR TESTING
 //Config contains the login token for the bot, the prefix and the owners id
 //This file will not be present in Heroku (is in .gitignore), so comment for live purposes
-//const config = require("./config.json");
-//client.login(config.token);
+/*
+const config = require("./config.json");
+client.login(config.token);
+ */
