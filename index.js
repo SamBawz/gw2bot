@@ -18,11 +18,11 @@ client.once("ready", () => {
 const date = new Date();
 let checkCooldown = false;
 function checkTime() {
-    if (date.getHours() === 14 && !checkCooldown) {
+    if (date.getHours() === 12 && !checkCooldown) {
         checkDailies();
         checkCooldown = true;
     }
-    else if (date.getHours() > 14) {
+    else if (date.getHours() > 12) {
         checkCooldown = false;
     }
 }
