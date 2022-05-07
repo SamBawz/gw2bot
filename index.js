@@ -7,22 +7,22 @@ const fetch = require('node-fetch');
 let channel = "";
 client.once("ready", () => {
     //bottest channel
-    client.channels.fetch('444237157029380096').then(targetChannel => channel = targetChannel);
+    //client.channels.fetch('444237157029380096').then(targetChannel => channel = targetChannel);
     //Fractal channel
-    //client.channels.fetch('750798181687885954').then(targetChannel => channel = targetChannel);
+    client.channels.fetch('750798181687885954').then(targetChannel => channel = targetChannel);
     //checkDailies();
     console.log("bot started on " + date.getHours() + " hours.");
-    setInterval(checkTime, 1000);
+    setInterval(checkTime, 36000);
 });
 
 const date = new Date();
 let checkCooldown = false;
 function checkTime() {
-    if (date.getHours() === 12 && !checkCooldown) {
+    if (date.getHours() === 5 && !checkCooldown) {
         checkDailies();
         checkCooldown = true;
     }
-    else if (date.getHours() > 12) {
+    else if (date.getHours() > 5) {
         checkCooldown = false;
     }
 }
