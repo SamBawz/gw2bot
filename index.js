@@ -19,6 +19,8 @@ client.once("ready", () => {
 });
 
 client.on("message", (message) => {
+    console.log(message);
+
     //If the author is a bot then ignore
     if (message.author.bot) {
         return;
@@ -40,7 +42,7 @@ client.on("message", (message) => {
     if (message.content.startsWith(prefix)) {
         let args = message.content.slice(prefix.length).trim().split(/ +/g);
         let command = args.shift().toLowerCase();
-
+        console.log(command);
         switch (command) {
             case "fractals" :
                 checkDailies(message.channel);
