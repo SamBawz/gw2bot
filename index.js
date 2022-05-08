@@ -1,7 +1,11 @@
 const Discord = require('discord.js');
 const { Client, Intents } = require('discord.js');
 const { MessageEmbed } = require('discord.js');
-const client = new Client({ intents: [Intents.FLAGS.GUILDS] });
+//const client = new Client({ intents: [Intents.FLAGS.GUILDS] });
+const client = new Discord.Client({
+    partials: ['MESSAGE', 'CHANNEL', 'REACTION'],
+    intents: [Discord.Intents.FLAGS.GUILDS, Discord.Intents.FLAGS.GUILD_MESSAGES]
+});
 let talkedRecently = new Set();
 const prefix = "!";
 //Required to fetch api data
@@ -9,6 +13,7 @@ const fetch = require('node-fetch');
 
 //let targetChannel = "";
 client.once("ready", () => {
+    console.log("bot up");
     //bottest channel
     //client.channels.fetch('444237157029380096').then(targetChannel => channel = targetChannel);
     //Fractal channel
