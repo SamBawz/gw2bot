@@ -60,12 +60,14 @@ client.on("messageCreate", (message) => {
 });
 
 const day = 1000 * 60 * 60 * 24;
+//5 hours offset to account for the time at which reset happens in game
+const hourOffset = 1000 * 60 * 60 * 5;
 let lastCheck = 0;
 function checkTime() {
-    if (lastCheck !== Math.ceil(Date.now() / day)) {
+    if (lastCheck !== Math.ceil(Date.now() - hourOffset / day)) {
         //checkDailies(targetChannel);
         console.log("new day!");
-        lastCheck = Math.ceil(Date.now() / day);
+        lastCheck = Math.ceil(Date.now() - hourOffset / day);
     }
 }
 
