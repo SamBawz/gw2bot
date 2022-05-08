@@ -1,19 +1,54 @@
 const Discord = require('discord.js');
 const { Client, Intents } = require('discord.js');
+const { MessageEmbed } = require('discord.js');
 const client = new Client({ intents: [Intents.FLAGS.GUILDS] });
+let talkedRecently = new Set();
+const prefix = "!";
 //Required to fetch api data
 const fetch = require('node-fetch');
 
-let channel = "";
+//let targetChannel = "";
 client.once("ready", () => {
     //bottest channel
     //client.channels.fetch('444237157029380096').then(targetChannel => channel = targetChannel);
     //Fractal channel
-    client.channels.fetch('750798181687885954').then(targetChannel => channel = targetChannel);
+    //client.channels.fetch('750798181687885954').then(channel => targetChannel = channel);
     //checkDailies();
-    console.log("bot started on " + date.getHours() + " hours.");
-    setInterval(checkTime, 36000);
+    //console.log("bot started on " + date.getHours() + " hours.");
+    //setInterval(checkTime, 36000);
 });
+
+client.on("message", (message) => {
+    //If the author is a bot then ignore
+    if (message.author.bot) {
+        return;
+    }
+
+    //If talkedRecently still exists (the bot has been summoned more then once in 1.5 seconds and by the same user) then return
+    if (talkedRecently.has(message.author.id)) {
+        return;
+    }
+
+    //Adds the user to the talkedRecently set
+    talkedRecently.add(message.author.id);
+    setTimeout(() => {
+        //Removes the user from the talkedRecently set after 1 second
+        talkedRecently.delete(message.author.id);
+    }, 1000);
+
+    //If the message starts with the prefix
+    if (message.content.startsWith(prefix)) {
+        let args = message.content.slice(prefix.length).trim().split(/ +/g);
+        let command = args.shift().toLowerCase();
+
+        switch (command) {
+            case "fractals" :
+                checkDailies(message.channel);
+                message.delete();
+                break;
+        }
+    }
+}); 
 
 const date = new Date();
 let checkCooldown = false;
@@ -27,7 +62,7 @@ function checkTime() {
     }
 }
 
-function checkDailies() {
+function checkDailies(channel) {
     let returnMessage = "Todays T4 fractal dailies are:"
     let dailyCount = 0;
 
@@ -61,8 +96,19 @@ function checkDailies() {
     //Delay because fetching the data uses async functions
     setTimeout(() => {
         if (channel && channel.isText()) {
-            channel.send(returnMessage);
-            channel.send("React with  :white_check_mark:  to join, or  :question:  if unsure");
+
+            let fractalEmbed = new MessageEmbed()
+                .setColor('#' + ("000000" + Math.random().toString(16).slice(2, 8).toUpperCase()).slice(-6))
+                .setDescription(returnMessage)
+                .setTimestamp()
+                .setFooter({ text: "React with  :white_check_mark:  to join, or  :question:  if unsure" });
+
+            channel.send(fractalEmbed);
+
+            //channel.send(returnMessage);
+            //channel.send("React with  :white_check_mark:  to join, or  :question:  if unsure");
+
+
             console.log("posting dailies...");
         }
     }, 10000);
