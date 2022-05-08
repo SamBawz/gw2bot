@@ -64,10 +64,10 @@ const day = 1000 * 60 * 60 * 24;
 const hourOffset = 1000 * 60 * 60 * 5;
 let lastCheck = 0;
 function checkTime() {
-    if (lastCheck !== Math.ceil(Date.now() - hourOffset / day)) {
+    if (lastCheck !== Math.ceil((Date.now() - hourOffset) / day)) {
         //checkDailies(targetChannel);
-        console.log("new day!");
-        lastCheck = Math.ceil(Date.now() - hourOffset / day);
+        console.log("new day! (day " + (Date.now() - hourOffset) / day + ")");
+        lastCheck = Math.ceil((Date.now() - hourOffset) / day);
     }
 }
 
