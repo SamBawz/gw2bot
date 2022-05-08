@@ -3,7 +3,6 @@ const { Client, Intents } = require('discord.js');
 const { MessageEmbed } = require('discord.js');
 //const client = new Client({ intents: [Intents.FLAGS.GUILDS] });
 const client = new Discord.Client({
-    partials: ['MESSAGE', 'CHANNEL', 'REACTION'],
     intents: [Discord.Intents.FLAGS.GUILDS, Discord.Intents.FLAGS.GUILD_MESSAGES]
 });
 let talkedRecently = new Set();
@@ -23,7 +22,7 @@ client.once("ready", () => {
     //setInterval(checkTime, 36000);
 });
 
-client.on("message", (message) => {
+client.on("messageCreate", (message) => {
     console.log(message);
 
     //If the author is a bot then ignore
