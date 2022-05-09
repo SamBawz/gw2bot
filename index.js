@@ -105,10 +105,10 @@ function checkDailies(channel, creator) {
     //Delay because fetching the data uses async functions
     setTimeout(() => {
         if (channel && channel.isText()) {
-            if (creator.name.length > 0) {
+            if (creator == null) {
                 let fractalEmbed = new MessageEmbed()
                     .setColor('#' + ("000000" + Math.random().toString(16).slice(2, 8).toUpperCase()).slice(-6))
-                    .setTitle(creator + " has created a fractal event!")
+                    .setTitle("Automated fractal event.")
                     .setDescription(returnMessage + ".")
                     .addField('\u200b', 'React with   :white_check_mark:   to join, or   :question:   if unsure.', false)
                     .setTimestamp();
@@ -117,7 +117,7 @@ function checkDailies(channel, creator) {
             else {
                 let fractalEmbed = new MessageEmbed()
                     .setColor('#' + ("000000" + Math.random().toString(16).slice(2, 8).toUpperCase()).slice(-6))
-                    .setTitle("Automated fractal event.")
+                    .setTitle(creator + " has created a fractal event!")
                     .setDescription(returnMessage + ".")
                     .addField('\u200b', 'React with   :white_check_mark:   to join, or   :question:   if unsure.', false)
                     .setTimestamp();
