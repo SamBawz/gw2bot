@@ -53,7 +53,7 @@ client.on("messageCreate", (message) => {
         switch (command) {
             case "fractals" :
                 checkDailies(message.channel, message.author.username);
-                //message.delete();
+                message.delete();
                 break;
         }
     }
@@ -62,7 +62,7 @@ client.on("messageCreate", (message) => {
 const day = 1000 * 60 * 60 * 24;
 //5 hours offset to account for the time at which reset happens in game
 const hourOffset = 1000 * 60 * 60 * 5;
-let lastCheck = 0;
+let lastCheck = Math.ceil((Date.now() - hourOffset) / day);
 function checkTime() {
     if (lastCheck !== Math.ceil((Date.now() - hourOffset) / day)) {
         checkDailies(targetChannel);
@@ -112,7 +112,10 @@ function checkDailies(channel, creator) {
                     .setDescription(returnMessage + ".")
                     .addField('\u200b', 'React with   :white_check_mark:   to join, or   :question:   if unsure.', false)
                     .setTimestamp();
-                channel.send({ embeds: [fractalEmbed] });
+                channel.send({ embeds: [fractalEmbed] }).then(msg => {
+                    //Delete after a day
+                    setTimeout(() => msg.delete(), 86400000)
+                });
             }
             else {
                 let fractalEmbed = new MessageEmbed()
@@ -121,7 +124,10 @@ function checkDailies(channel, creator) {
                     .setDescription(returnMessage + ".")
                     .addField('\u200b', 'React with   :white_check_mark:   to join, or   :question:   if unsure.', false)
                     .setTimestamp();
-                channel.send({ embeds: [fractalEmbed] });
+                channel.send({ embeds: [fractalEmbed] }).then(msg => {
+                    //Delete after a day
+                    setTimeout(() => msg.delete(), 86400000)
+                });
             }
 
 
