@@ -65,8 +65,8 @@ const hourOffset = 1000 * 60 * 60 * 5;
 let lastCheck = 0;
 function checkTime() {
     if (lastCheck !== Math.ceil((Date.now() - hourOffset) / day)) {
-        //checkDailies(targetChannel);
-        console.log("new day! (day " + (Date.now() - hourOffset) / day + ")");
+        checkDailies(targetChannel); 
+        console.log("new day! (day " + Math.ceil((Date.now() - hourOffset) / day) + ")");
         lastCheck = Math.ceil((Date.now() - hourOffset) / day);
     }
 }
