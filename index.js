@@ -3,7 +3,7 @@ const { Client, Intents, Message} = require('discord.js');
 const { MessageEmbed } = require('discord.js');
 //const client = new Client({ intents: [Intents.FLAGS.GUILDS] });
 const client = new Discord.Client({
-    intents: [Discord.Intents.FLAGS.GUILDS, Discord.Intents.FLAGS.GUILD_MESSAGES, Discord.Intents.FLAGS.GUILD_PRESENCES]
+    intents: [Discord.Intents.FLAGS.GUILDS, Discord.Intents.FLAGS.GUILD_MESSAGES, Discord.Intents.FLAGS.GUILD_PRESENCES, Discord.Intents.FLAGS.GUILD_MESSAGE_REACTIONS]
 });
 let talkedRecently = new Set();
 const prefix = "!";
@@ -53,7 +53,7 @@ client.on("messageCreate", (message) => {
         switch (command) {
             case "fractals" :
                 checkDailies(message.channel, message.author.username);
-                message.delete();
+                //message.delete();
                 break;
         }
     }
@@ -113,6 +113,8 @@ function checkDailies(channel, creator) {
                     .addField('\u200b', 'React with   :white_check_mark:   to join, or   :question:   if unsure.', false)
                     .setTimestamp();
                 channel.send({ embeds: [fractalEmbed] }).then(msg => {
+                    msg.react('✅');
+                    msg.react('❓');
                     //Delete after a day
                     setTimeout(() => msg.delete(), 86400000)
                 });
@@ -125,6 +127,8 @@ function checkDailies(channel, creator) {
                     .addField('\u200b', 'React with   :white_check_mark:   to join, or   :question:   if unsure.', false)
                     .setTimestamp();
                 channel.send({ embeds: [fractalEmbed] }).then(msg => {
+                    msg.react('✅');
+                    msg.react('❓');
                     //Delete after a day
                     setTimeout(() => msg.delete(), 86400000)
                 });
@@ -153,4 +157,5 @@ client.login(process.env.token);
 const config = require("./config.json");
 client.login(config.token);
  */
+
 
