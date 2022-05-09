@@ -65,7 +65,7 @@ const hourOffset = 1000 * 60 * 60 * 5;
 let lastCheck = 0;
 function checkTime() {
     if (lastCheck !== Math.ceil((Date.now() - hourOffset) / day)) {
-        checkDailies(targetChannel); 
+        checkDailies(targetChannel);
         console.log("new day! (day " + Math.ceil((Date.now() - hourOffset) / day) + ")");
         lastCheck = Math.ceil((Date.now() - hourOffset) / day);
     }
@@ -105,7 +105,7 @@ function checkDailies(channel, creator) {
     //Delay because fetching the data uses async functions
     setTimeout(() => {
         if (channel && channel.isText()) {
-            if (creator.length > 0) {
+            if (creator.name.length > 0) {
                 let fractalEmbed = new MessageEmbed()
                     .setColor('#' + ("000000" + Math.random().toString(16).slice(2, 8).toUpperCase()).slice(-6))
                     .setTitle(creator + " has created a fractal event!")
