@@ -1,0 +1,26 @@
+{
+  "currentWeek": 1,
+  "MaxWeeks": 8,
+  "generalMessage": "Please react for the following: \n :star: That you will tank next week\n :pray: That you will heal (2 please)\n :muscle: That you will provide Might\n :five: That you will provide Quickness (2 please)\n :keycap_ten: That you will provide Alacrity",
+  "wings":[
+    { "name":"wing 1", "description":"", "emoji": ""},
+    { "name":"wing 2", "description":"", "emoji": ""},
+    { "name":"wing 3", "description":"", "emoji": ""},
+    { "name":"wing 4", "description":"", "emoji": ""},
+    { "name":"wing 5", "description":"", "emoji": ""},
+    { "name":"wing 6", "description":"", "emoji": ""},
+    { "name":"wing 7", "description":"", "emoji": ""},
+    { "name":"strikes", "description":"", "emoji": ""}
+  ],
+  "weeks": [
+    {"id": 1, "wings": [
+      {"id": 1, "name": "wing 1"},
+      {"id": 2, "name": "wing 2"},
+      {"id": 3, "name": "wing 3"}
+    ]},
+    {"id": 2, "wings": [
+    ]},
+    {"id": 3, "wings": [
+    ]}
+  ]
+}
