@@ -1,0 +1,35 @@
+[
+  {
+    "id": 1,
+    "wings": [
+      {
+        "id": 1,
+        "name": "wing 1"
+      },
+      {
+        "id": 2,
+        "name": "wing 2"
+      },
+      {
+        "id": 3,
+        "name": "wing 3"
+      }
+    ]
+  },
+  {
+    "id": 2,
+    "wings": [
+    ]
+  },
+  {
+    "id": 3,
+    "wings": [
+    ]
+  },
+  {
+    "id": 1,
+    "wing1": "wing 1",
+    "wing2": "wing 2",
+    "wing3": "wing 3"
+  }
+]
