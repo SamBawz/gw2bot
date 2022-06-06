@@ -1,35 +1,70 @@
 [
   {
-    "id": 1,
+    "weekNumber": 1,
     "wings": [
       {
-        "id": 1,
-        "name": "wing 1"
+        "wingNumber": 1,
+        "name": ""
       },
       {
-        "id": 2,
-        "name": "wing 2"
+        "wingNumber": 2,
+        "name": ""
       },
       {
-        "id": 3,
-        "name": "wing 3"
+        "wingNumber": 3,
+        "name": ""
       }
     ]
   },
   {
-    "id": 2,
+    "weekNumber": 2,
     "wings": [
+      {
+        "wingNumber": 1,
+        "name": ""
+      },
+      {
+        "wingNumber": 2,
+        "name": ""
+      },
+      {
+        "wingNumber": 3,
+        "name": ""
+      }
     ]
   },
   {
-    "id": 3,
+    "weekNumber": 3,
     "wings": [
+      {
+        "wingNumber": 1,
+        "name": ""
+      },
+      {
+        "wingNumber": 2,
+        "name": ""
+      },
+      {
+        "wingNumber": 3,
+        "name": ""
+      }
     ]
   },
   {
-    "id": 1,
-    "wing1": "wing 1",
-    "wing2": "wing 2",
-    "wing3": "wing 3"
+    "weekNumber": 4,
+    "wings": [
+      {
+        "wingNumber": 1,
+        "name": ""
+      },
+      {
+        "wingNumber": 2,
+        "name": ""
+      },
+      {
+        "wingNumber": 3,
+        "name": ""
+      }
+    ]
   }
 ]

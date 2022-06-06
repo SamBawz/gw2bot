@@ -1,7 +1,7 @@
 {
   "name": "gw2bot",
   "version": "1.0.0",
-  "description": "A bot created to display current Guild Wars 2 fractal dailies",
+  "description": "A bot created to manage Guild Wars 2 raid schedules for Nikart",
   "main": "index.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1"
