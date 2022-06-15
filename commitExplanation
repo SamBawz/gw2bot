@@ -20,5 +20,9 @@ https://stackoverflow.com/questions/55955948/heroku-login-success-but-then-freez
 https://apple.stackexchange.com/questions/14683/how-to-cd-to-a-directory-with-a-name-containing-spaces-in-bash
 https://stackoverflow.com/questions/39015893/heroku-deploy-error-cannot-find-module-app-index-js
 
+Code om de bot te laten inloggen (moet op het einde van de index.js file):
+//Login with heroku (live)
+client.login(process.env.token);
+
 
 

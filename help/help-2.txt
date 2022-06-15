@@ -1,0 +1,31 @@
+**Raid schedule management**
+------------------------
+**- $edit week (name) (new description)**
+Adjusts the description and the wings contained in the specified week.
+The description is optional.
+**- $edit raidmessage (new message)**
+Adjusts the general message that will always be added to the raid schedule
+message. The message is optional.
+**- $edit schedule (number of weeks)**
+Adjusts the number of weeks in the schedule. Please note that this will wipe the
+schedule, removing all currently configured weeks. This will also set the current
+week to week 1.
+**- $set week (number of the week)**
+Adjusts the current week in the schedule to the given number. If this number is
+greater or less than the number of weeks in the schedule, the current week will
+be set to week 1 instead.
+**- $toggle raids**
+Turns the weekly automated raid schedule on or off.
+**- $display schedule**
+Direct messages you the entire schedule that is currently saved. This will include
+the wings that are currently configured for each week.
+**- $display raidmessage**
+Direct messages you the currently configured general message. This is the
+message that is always included with the raid schedule message.
+
+**Fractal event management**
+------------------------
+**- $create fractals**
+Creates a user created fractal event in the current channel.
+**- $toggle fractals**
+Turns the daily automated fractal events on or off.

@@ -1,0 +1,29 @@
+**Configuration commands**
+------------------------
+**- $set fractalchannel**
+Sets the current channel as the fractal reminder channel.
+**- $set reminderchannel**
+Sets the current channel as the reminder channel.
+**- $set raidchannel**
+Sets the current channel as the raid schedule channel.
+**- $toggle fractals**
+Turns the daily automated fractal events on or off.
+**- $toggle ass**
+Turns the weekly automated ‘ass’ reminder on or off.
+**- $toggle raids**
+Turns the weekly automated raid schedule on or off.
+**- $display config**
+Display the general settings currently configured.
+
+**Raid wing management**
+------------------------
+**- $create wing (name) (description)**
+Adds a wing to the database. The description is optional.
+**- $edit wing (name) (new description)**
+Adjusts the description and emoji of the specified wing. The description is
+optional.
+**- $delete wing (name)**
+Deletes the specified wing from the database.
+**- $display wings**
+Direct messages you the entire database of wings that are currently saved.
+.
