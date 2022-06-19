@@ -1,12 +1,1 @@
-{
-  "token": "OTcyMTM1OTM2NzMxMjY3MTQy.YnUqJA.ukQDMR5iFi_qmLIp4BqngX2vOHA",
-  "prefix": "$",
-  "botId": "972135936731267142",
-  "fractalChannel": "444237157029380096",
-  "testChannel": "444237157029380096",
-  "raidChannel": "444237157029380096",
-  "reminderChannel": "444237157029380096",
-  "postFractalEvents": true,
-  "postRaidSchedule": true,
-  "postAssReminders": true
-}
+{"prefix":"$","botId":"972135936731267142","fractalChannel":"444237157029380096","testChannel":"444237157029380096","raidChannel":"444237157029380096","reminderChannel":"444237157029380096","postFractalEvents":true,"postRaidSchedule":true,"postAssReminders":true}

@@ -24,5 +24,11 @@ Code om de bot te laten inloggen (moet op het einde van de index.js file):
 //Login with heroku (live)
 client.login(process.env.token);
 
+ENV FILES UITLEG
+https://github.com/AnIdiotsGuide/discordjs-bot-guide/blob/master/other-guides/env-files.md
+
+TENOR API UITLEG (pak de juiste endpoint, dit is ondertussen v2)
+https://medium.com/swlh/build-your-first-discord-gif-bot-and-deploy-2cc917888113
+
 
 

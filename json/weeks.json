@@ -4,15 +4,15 @@
     "wings": [
       {
         "wingNumber": 1,
-        "name": ""
+        "name": "wing-1"
       },
       {
         "wingNumber": 2,
-        "name": ""
+        "name": "wing-2"
       },
       {
         "wingNumber": 3,
-        "name": ""
+        "name": "wing-3"
       }
     ]
   },

@@ -7,6 +7,9 @@ const client = new Discord.Client({
 });
 //Required to fetch api data
 const fetch = require('node-fetch');
+//Required to use env files
+//https://github.com/AnIdiotsGuide/discordjs-bot-guide/blob/master/other-guides/env-files.md
+require("dotenv").config();
 let talkedRecently = new Set();
 
 //Json files
@@ -170,7 +173,13 @@ client.on("messageCreate", (message) => {
                             break;
                         //Creates a user created fractal event for people to sign up to
                         case "fractals" :
-                            postFractalEvent(message.channel.id, message.author.username);
+                            postFractalEvent(config['fractalChannel'], message.author.username);
+                            break;
+                        case "ass" :
+                            postAssReminder(config['reminderChannel']);
+                            break;
+                        case "schedule" :
+                            postRaidSchedule(config['raidChannel']);
                             break;
                     }
                     break;
@@ -216,7 +225,7 @@ client.on("messageCreate", (message) => {
 
 //#region MESSAGE FILTERS
 
-//Ensures that the creater of the application can only respond
+//Ensures that the creator of the application can only respond
 const confirmFilter = (reaction, user) => {
     return reaction.emoji.name === '👍' && user.id === message.author.id;
 };
@@ -224,6 +233,17 @@ const confirmFilter = (reaction, user) => {
 const userFilter = (user) => {
     return user.id === message.author.id;
 };
+
+//Everyone can respond
+/*
+const confirmFilter = (reaction) => {
+    return reaction.emoji.name === '👍';
+};
+
+const userFilter = () => {
+    return true;
+};
+ */
 
 //#endregion
 
@@ -273,7 +293,7 @@ function writeToJson(fileName, object, channelToWriteTo = undefined, errorMessag
         }
 
         if (err) {
-            console.log(err);
+            console.log("couldn't write to json file: " + err);
             return false;
         } else {
             //Update the variable containing the json data
@@ -304,18 +324,18 @@ function addWing(channel, name, description) {
                     message.awaitReactions({max: 1, time: 60000, errors: ['time']})
                         .then(collected => {
                             const reaction = collected.first();
-                            //Check if the emoji is already used
-                            if(!getWingEmojis().includes(reaction.emoji.name)) {
-                                //Add the new wing to the wings table that we got from the json file
-                                wings.push({name: name, description: description, emoji: reaction.emoji.name});
-                                //Write the table back to the json file
-                                writeToJson("wings", wings, channel, "Something went wrong", "Wing added :)", message);
+                            if (typeof (reaction) != "undefined") {
+                                //Check if the emoji is already used
+                                if (!getWingEmojis().includes(reaction.emoji.name)) {
+                                    //Add the new wing to the wings table that we got from the json file
+                                    wings.push({name: name, description: description, emoji: reaction.emoji.name});
+                                    //Write the table back to the json file
+                                    writeToJson("wings", wings, channel, "Something went wrong", "Wing added :)", message);
+                                } else {
+                                    message.delete();
+                                    channel.send("The emoji you're trying to assign, is already in use by a different wing");
+                                }
                             }
-                            else {
-                                message.delete();
-                                channel.send("The emoji you're trying to assign, is already in use by a different wing");
-                            }
-
                         })
                         .catch(er => {
                             message.delete();
@@ -339,19 +359,20 @@ function editWing(channel, name, description) {
                     message.awaitReactions({max: 1, time: 60000, errors: ['time']})
                         .then(collected => {
                             const reaction = collected.first();
-                            if(!getWingEmojis().includes(reaction.emoji.name)) {
-                                //Adjust the wings table that we got from the json file by replacing an old object with the new data
-                                wings.splice(findWing(name), 1, {
-                                    name: name,
-                                    description: description,
-                                    emoji: reaction.emoji.name
-                                });
-                                //Write it back to the json file
-                                writeToJson("wings", wings, channel, "Something went wrong", "Wing adjusted :)", message)
-                            }
-                            else {
-                                message.delete();
-                                channel.send("The emoji you're trying to assign, is already in use by a different wing");
+                            if (typeof (reaction) != "undefined") {
+                                if (!getWingEmojis().includes(reaction.emoji.name)) {
+                                    //Adjust the wings table that we got from the json file by replacing an old object with the new data
+                                    wings.splice(findWing(name), 1, {
+                                        name: name,
+                                        description: description,
+                                        emoji: reaction.emoji.name
+                                    });
+                                    //Write it back to the json file
+                                    writeToJson("wings", wings, channel, "Something went wrong", "Wing adjusted :)", message)
+                                } else {
+                                    message.delete();
+                                    channel.send("The emoji you're trying to assign, is already in use by a different wing");
+                                }
                             }
                         })
                         .catch(er => {
@@ -371,13 +392,13 @@ function showWings(author) {
         author = targetAuthor;
         let message = "These wings are currently saved:\n";
         wings.forEach(wing => {
-            message += "**" + wing['name'] + "**\n";
+            message += "---\n**" + wing['name'] + "**\n";
             if (wing['description'].length > 0) {
-                message += "Description:\n";
+                message += "**Description:**\n";
                 message += wing['description'] + "\n";
             }
             if (wing['emoji'].length > 0) {
-                message += "Emoji:\n";
+                message += "**Emoji:**\n";
                 message += wing['emoji'] + " \n";
             }
         })
@@ -395,11 +416,13 @@ function deleteWing(channel, name) {
                 .then(message => {
                     message.awaitReactions({confirmFilter, max: 1, time: 60000, errors: ['time']})
                         .then(collected => {
-                            //Wipe the schedule
-                            if (writeToJson("weeks", createSchedule(schedule['MaxWeeks']), channel, "Something went wrong")) {
-                                //Remove the wing from the file
-                                wings.splice(findWing(name), 1);
-                                writeToJson("wings", wings, channel, "Something went wrong", "Wing deleted and schedule reset :)", message);
+                            if (typeof (collected.first()) != "undefined") {
+                                //Wipe the schedule
+                                if (writeToJson("weeks", createSchedule(schedule['MaxWeeks']), channel, "Something went wrong")) {
+                                    //Remove the wing from the file
+                                    wings.splice(findWing(name), 1);
+                                    writeToJson("wings", wings, channel, "Something went wrong", "Wing deleted and schedule reset :)", message);
+                                }
                             }
                         })
                         .catch(er => {
@@ -443,26 +466,28 @@ function getWingEmojis() {
 function postRaidSchedule(channel) {
     client.channels.fetch(channel).then(targetChannel => {
         channel = targetChannel;
-        //Find the current week in the json file and get the relevant wing names
-        let wing1 = "";
-        let wing2 = "";
-        let wing3 = "";
-        try {
-            wing1 = getCurrentWeek()['wings'][0].name;
-        } catch {
+        //Find the current week in the json file and get the relevant wing names and descriptions
+        let wingNames = "";
+        let wingDescriptions = "";
+        let wing1 = getCurrentWeek()['wings'][0];
+        if (typeof (wing1) != "undefined" && wing1.name.length > 0) {
+            wingNames += wing1.name;
+            wingDescriptions += wing1.name + "\n" + getWingByName(wing1.name)['description'];
         }
-        try {
-            wing2 = ", " + getCurrentWeek()['wings'][1].name;
-        } catch {
+        let wing2 = getCurrentWeek()['wings'][1];
+        if (typeof (wing2) != "undefined" && wing2.name.length > 0) {
+            wingNames += ", " + wing2.name;
+            wingDescriptions += "\n\n" + wing2.name + "\n" + getWingByName(wing2.name)['description'];
         }
-        try {
-            wing3 = " and " + getCurrentWeek()['wings'][2].name;
-        } catch {
+        let wing3 = getCurrentWeek()['wings'][2];
+        if (typeof (wing3) != "undefined" && wing3.name.length > 0) {
+            wingNames += " and " + wing3.name;
+            wingDescriptions += "\n\n" + wing3.name + "\n" + getWingByName(wing3.name)['description'];
         }
         let raidEmbed = new MessageEmbed()
             .setColor('#' + ("000000" + Math.random().toString(16).slice(2, 8).toUpperCase()).slice(-6))
-            .setTitle("Next week is week " + schedule['currentWeek'] + " of " + schedule['MaxWeeks'] + " (" + wing1 + wing2 + wing3 + ")")
-            .setDescription(schedule['generalMessage'])
+            .setTitle("Next week is week " + schedule['currentWeek'] + " of " + schedule['MaxWeeks'] + " (" + wingNames + ")")
+            .setDescription(schedule['generalMessage'] + "\n\n" + wingDescriptions)
             .addField('\u200b', 'And finally :no_entry_sign: if something urgent comes up and you will not be here!', false)
             .setTimestamp();
         channel.send({embeds: [raidEmbed]});
@@ -493,11 +518,13 @@ function newSchedule(channel, size) {
                 .then(message => {
                     message.awaitReactions({confirmFilter, max: 1, time: 60000, errors: ['time']})
                         .then(collected => {
-                            if (writeToJson("weeks", createSchedule(size), channel, "Something went wrong")) {
-                                //Adjust the schedule file if writing to the json file was successful
-                                schedule['MaxWeeks'] = parseInt(size);
-                                setCurrentWeek(1);
-                                writeToJson("schedule", schedule, channel, "Something went wrong", "Schedule cleared and adjusted :)", message);
+                            if (typeof (collected.first()) != "undefined") {
+                                if (writeToJson("weeks", createSchedule(size), channel, "Something went wrong")) {
+                                    //Adjust the schedule file if writing to the json file was successful
+                                    schedule['MaxWeeks'] = parseInt(size);
+                                    setCurrentWeek(1);
+                                    writeToJson("schedule", schedule, channel, "Something went wrong", "Schedule cleared and adjusted :)", message);
+                                }
                             }
                         })
                         .catch(er => {
@@ -531,7 +558,7 @@ function showSchedule(author) {
         author = targetAuthor;
         let message = "These weeks are currently saved:\n";
         weeks.forEach(week => {
-            message += "**Week " + week['weekNumber'] + "**\n";
+            message += "---\n**Week " + week['weekNumber'] + "**\n";
             week['wings'].forEach(wing => {
                 if (wing['name'].length > 0) {
                     message += wing['name'] + "\n";
@@ -568,48 +595,51 @@ function editWeek(channel, number) {
                         .then(collected => {
                             //Convert the collected information to an array of three objects
                             const reaction = Array.from(collected.values());
-                            //Check if the three reactions have emojis that are present in the wings.json file
-                            if (typeof (reaction[0]) != "undefined" && typeof (reaction[1]) != "undefined" && typeof (reaction[2]) != "undefined") {
-                                if (getWingEmojis().includes(reaction[0].emoji.name) && getWingEmojis().includes(reaction[1].emoji.name) && getWingEmojis().includes(reaction[2].emoji.name)) {
-                                    //Get all the wing names in order of the relevant reactions
-                                    let wingNames = [];
-                                    reaction.forEach(react => {
-                                        wings.forEach(wing => {
-                                            if (react.emoji.name === wing['emoji']) {
-                                                wingNames.push(wing['name']);
-                                            }
+                            if (typeof (reaction) != "undefined") {
+                                //Check if the three reactions have emojis that are present in the wings.json file
+                                if (typeof (reaction[0]) != "undefined" && typeof (reaction[1]) != "undefined" && typeof (reaction[2]) != "undefined") {
+                                    if (getWingEmojis().includes(reaction[0].emoji.name) && getWingEmojis().includes(reaction[1].emoji.name) && getWingEmojis().includes(reaction[2].emoji.name)) {
+                                        //Get all the wing names in order of the relevant reactions
+                                        let wingNames = [];
+                                        reaction.forEach(react => {
+                                            wings.forEach(wing => {
+                                                if (react.emoji.name === wing['emoji']) {
+                                                    wingNames.push(wing['name']);
+                                                }
+                                            });
                                         });
-                                    });
-                                    //Replace the chosen week in the weeks variable with a new object, containing the wings that were selected
-                                    weeks.splice(findWeek(number), 1, {
-                                        weekNumber: parseInt(number),
-                                        "wings": [
-                                            {
-                                                "wingNumber": 1,
-                                                "name": wingNames[0]
-                                            },
-                                            {
-                                                "wingNumber": 2,
-                                                "name": wingNames[1]
-                                            },
-                                            {
-                                                "wingNumber": 3,
-                                                "name": wingNames[2]
-                                            }
-                                        ]
-                                    });
-                                    //Write the weeks variable back to the json file
-                                    writeToJson("weeks", weeks, channel, "Something went wrong", "Week adjusted :)", message);
+                                        //Replace the chosen week in the weeks variable with a new object, containing the wings that were selected
+                                        weeks.splice(findWeek(number), 1, {
+                                            weekNumber: parseInt(number),
+                                            "wings": [
+                                                {
+                                                    "wingNumber": 1,
+                                                    "name": wingNames[0]
+                                                },
+                                                {
+                                                    "wingNumber": 2,
+                                                    "name": wingNames[1]
+                                                },
+                                                {
+                                                    "wingNumber": 3,
+                                                    "name": wingNames[2]
+                                                }
+                                            ]
+                                        });
+                                        //Write the weeks variable back to the json file
+                                        writeToJson("weeks", weeks, channel, "Something went wrong", "Week adjusted :)", message);
+                                    } else {
+                                        message.delete();
+                                        channel.send("Wings not found. Did you enter the right reactions?");
+                                    }
                                 } else {
                                     message.delete();
                                     channel.send("Wings not found. Did you enter the right reactions?");
                                 }
-                            } else {
-                                message.delete();
-                                channel.send("Wings not found. Did you enter the right reactions?");
                             }
                         })
                         .catch(er => {
+                            message.delete();
                             console.log(er);
                         });
                 });
@@ -621,12 +651,22 @@ function editWeek(channel, number) {
 
 function getCurrentWeek() {
     let currentWeek;
-    schedule['weeks'].forEach((week) => {
-        if (week.id === schedule.currentWeek) {
+    weeks.forEach((week) => {
+        if (week['weekNumber'] === schedule['currentWeek']) {
             currentWeek = week;
         }
     });
-    return week;
+    return currentWeek;
+}
+
+function getWingByName(name) {
+    let selectedWing;
+    wings.forEach((wing) => {
+        if (wing['name'] === name) {
+            selectedWing = wing;
+        }
+    });
+    return selectedWing;
 }
 
 function setCurrentWeek(number) {
@@ -657,8 +697,13 @@ const day = hour * 24;
 const week = day * 7;
 //8 hours offset to account for the time at which reset happens in game
 const hourOffset = hour * 8;
+//Date offset of 3 days because date.now calculates the time since jan 1st 1970 WHICH IS A THURSDAY
+//We want to check every sunday instead
+const dayOffset = day * 3;
 let timeCheckCooldown = false;
+
 function checkTime() {
+    //console.log((Date.now() + dayOffset) / week);
     //Sets a cooldown of 60s on checking the time. This way the json files cant be read or written to multiple times per 60 seconds.
     if (!timeCheckCooldown) {
         timeCheckCooldown = true;
@@ -685,7 +730,7 @@ function checkTime() {
                     changes = true;
                 }
                 //Weekly check
-                if (parseInt(schedule['lastWeeklyCheck']) !== Math.ceil((Date.now() - hourOffset) / week)) {
+                if (parseInt(schedule['lastWeeklyCheck']) !== Math.ceil((Date.now() - hourOffset + dayOffset) / week)) {
                     //Raid schedule
                     if (config['postRaidSchedule']) {
                         deletePreviousBotMessages(config['raidChannel']);
@@ -699,7 +744,7 @@ function checkTime() {
                     //Update the schedule
                     console.log("It's a new week! Posting weekly messages...");
                     setCurrentWeek(schedule['currentWeek'] + 1);
-                    schedule['lastWeeklyCheck'] = Math.ceil((Date.now() - hourOffset) / week);
+                    schedule['lastWeeklyCheck'] = Math.ceil((Date.now() - hourOffset + dayOffset) / week);
                     changes = true;
                 }
                 //Write everything that has changed to the json file
@@ -716,7 +761,9 @@ function postAssReminder(channel) {
         channel = targetChannel;
         //Use fetch to find a random gif on tenor.com, based on the keyword
         let keywords = 'ass';
-        let url = `https://g.tenor.com/v1/search?q=${keywords}&key=${process.env.TENORKEY}&contentfilter=low`;
+        //I got the api key from tenor at https://developers.google.com/tenor/guides/quickstart
+        //https://medium.com/swlh/build-your-first-discord-gif-bot-and-deploy-2cc917888113
+        let url = `https://api.tenor.com/v2/search?q=${keywords}&key=${process.env.TENOR_KEY}&contentfilter=low`;
         fetch(url).then((answer) => {
             return answer.json();
         }).then((body) => {
@@ -726,7 +773,7 @@ function postAssReminder(channel) {
                 .setColor('#' + ("000000" + Math.random().toString(16).slice(2, 8).toUpperCase()).slice(-6))
                 .setTitle("IT'S BOOTY TIME!")
                 .setDescription("Get your Antique Summoning Stones now!")
-                .setImage(body.results[index].media[0].gif.url)
+                .setImage(body.results[index].media_formats.gif.url)
             channel.send({embeds: [assEmbed]});
         });
     });
@@ -806,4 +853,4 @@ function postFractalEvent(channel, creator) {
 //LOGIN LINES FOR TESTING
 //Config contains the login token for the bot, the prefix and the owners id
 //This file will not be present in Heroku (is in .gitignore), so comment for live purposes
-client.login(config['token']);
+client.login(process.env.token);
