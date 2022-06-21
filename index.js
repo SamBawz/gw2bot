@@ -8,7 +8,6 @@ const client = new Discord.Client({
 //Required to fetch api data
 const fetch = require('node-fetch');
 //Required to use env files
-//https://github.com/AnIdiotsGuide/discordjs-bot-guide/blob/master/other-guides/env-files.md
 require("dotenv").config();
 let talkedRecently = new Set();
 
@@ -703,7 +702,8 @@ const dayOffset = day * 3;
 let timeCheckCooldown = false;
 
 function checkTime() {
-    //console.log((Date.now() + dayOffset) / week);
+    //console.log((Date.now() - hourOffset + dayOffset) / week);
+    //console.log(Math.ceil((Date.now() - hourOffset + dayOffset) / week))
     //Sets a cooldown of 60s on checking the time. This way the json files cant be read or written to multiple times per 60 seconds.
     if (!timeCheckCooldown) {
         timeCheckCooldown = true;

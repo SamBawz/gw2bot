@@ -1,5 +1,5 @@
 De bot wordt gehost op Heroku. Deze heeft dankzij veiligheids redenen geen webverbinding met github (waar de code op staat). Om dit op te lossen
-moet code gepushed worden naar github en vervolgens via git bash (command line) gepushed worden naar Heroku. Dit kan gedaan worden via de volgende stappen:
+moet code gepusht worden naar github en vervolgens via git bash (command line) gepusht worden naar Heroku. Dit kan gedaan worden via de volgende stappen:
 1. Commit en en push alle veranderingen.
 2. Open git bash als administrator.
 3. Ga naar de juiste map met de commando:  cd /d/discord\ bot/gw2bot  (backslash staat voor een spatie)
@@ -21,7 +21,6 @@ https://apple.stackexchange.com/questions/14683/how-to-cd-to-a-directory-with-a-
 https://stackoverflow.com/questions/39015893/heroku-deploy-error-cannot-find-module-app-index-js
 
 Code om de bot te laten inloggen (moet op het einde van de index.js file):
-//Login with heroku (live)
 client.login(process.env.token);
 
 ENV FILES UITLEG

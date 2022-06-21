@@ -1,1 +1,11 @@
-{"prefix":"$","botId":"972135936731267142","fractalChannel":"444237157029380096","testChannel":"444237157029380096","raidChannel":"444237157029380096","reminderChannel":"444237157029380096","postFractalEvents":true,"postRaidSchedule":true,"postAssReminders":true}
+{
+  "prefix": "$",
+  "botId": "972135936731267142",
+  "fractalChannel": "750798181687885954",
+  "testChannel": "444237157029380096",
+  "raidChannel": "902191140890116156",
+  "reminderChannel": "901927614380380210",
+  "postFractalEvents": false,
+  "postRaidSchedule": false,
+  "postAssReminders": false
+}
