@@ -65,6 +65,6 @@ Belangrijke links:
 
 Minder belangrijk maar relevant:
 https://www.youtube.com/watch?v=KD9OaryS1Kw&ab_channel=SalesforceDevelopers
-(login error in Git Bash)[https://stackoverflow.com/questions/55955948/heroku-login-success-but-then-freezes]
-(het gebruik van spaties in Git Bash)[https://apple.stackexchange.com/questions/14683/how-to-cd-to-a-directory-with-a-name-containing-spaces-in-bash]
+[login error in Git Bash](https://stackoverflow.com/questions/55955948/heroku-login-success-but-then-freezes)
+[het gebruik van spaties in Git Bash](https://apple.stackexchange.com/questions/14683/how-to-cd-to-a-directory-with-a-name-containing-spaces-in-bash)
 https://stackoverflow.com/questions/39015893/heroku-deploy-error-cannot-find-module-app-index-js
