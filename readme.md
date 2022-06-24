@@ -3,8 +3,9 @@ https://nodejs.org/en/download/
 
 # Node modules
 Deze applicatie maakt gebruikt van node modules die niet meegegeven worden aan de repository. Ik gebruik de volgende node modules:
-discord.js
-dotenv
+[discord.js](https://discord.js.org/#/)
+
+[dotenv](https://www.npmjs.com/package/dotenv)
 
 # Belangrijke technieken en standaarden
 
@@ -31,7 +32,9 @@ https://medium.com/swlh/build-your-first-discord-gif-bot-and-deploy-2cc917888113
 ## Bot inloggen
 Om de bot te laten inloggen moet de bot key gebruikt worden. Deze staan in de env file. De code om mee in te loggen moet onderaan de code staan.
 Gebruik de volgende lijn om in te loggen:
+```
 client.login(process.env.token);
+```
 
 # Aanpassingen pushen naar Heroku (het hostingplatform)
 De bot wordt gehost op Heroku. Deze heeft om veiligheids redenen geen webverbinding met github (waar de code op staat). Om dit op te lossen
@@ -43,6 +46,7 @@ moet code gepusht worden naar github en vervolgens via git bash (command line) g
 cd /d/discord\ bot/gw2bot  
 ```
 (backslash staat voor een spatie)
+
 4. Log in via de commando:  
 ```
 heroku login
@@ -59,12 +63,19 @@ git push heroku main
 8. PROFIT
 
 Belangrijke links:
+
 [tutorial voor alles behalve git bash](https://www.youtube.com/watch?v=Pck6JvLCBVk&ab_channel=TheBelgiumGames)
+
 [de dashboard om de logs van de applicatie te zien en te debugge](https://dashboard.heroku.com/apps/gw2phluntbot/logs)
+
 [hulp met de error waardoor Git Bash gebruikt moet worden](https://namespaceit.com/blog/items-could-not-be-retrieved-internal-server-error-heroku-and-github)
 
 Minder belangrijk maar relevant:
+
 https://www.youtube.com/watch?v=KD9OaryS1Kw&ab_channel=SalesforceDevelopers
+
 [login error in Git Bash](https://stackoverflow.com/questions/55955948/heroku-login-success-but-then-freezes)
+
 [het gebruik van spaties in Git Bash](https://apple.stackexchange.com/questions/14683/how-to-cd-to-a-directory-with-a-name-containing-spaces-in-bash)
+
 https://stackoverflow.com/questions/39015893/heroku-deploy-error-cannot-find-module-app-index-js
