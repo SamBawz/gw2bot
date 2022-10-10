@@ -229,6 +229,10 @@ const confirmFilter = (reaction, user) => {
     return reaction.emoji.name === '👍' && user.id === message.author.id;
 };
 
+const absentFilter = (reaction) => {
+    [':no_entry_sign:'].includes(reaction.emoji.name)
+};
+
 const userFilter = (user) => {
     return user.id === message.author.id;
 };
@@ -359,7 +363,7 @@ function editWing(channel, name, description) {
                         .then(collected => {
                             const reaction = collected.first();
                             if (typeof (reaction) != "undefined") {
-                                if (!getWingEmojis().includes(reaction.emoji.name)) {
+                                if (!getWingEmojis().includes(reaction.emoji.name) || getWingEmojis(name) === reaction.emoji.name) {
                                     //Adjust the wings table that we got from the json file by replacing an old object with the new data
                                     wings.splice(findWing(name), 1, {
                                         name: name,
@@ -447,14 +451,27 @@ function findWing(name) {
 }
 
 //Function to put all configured wing emojis in an array
-function getWingEmojis() {
-    let emojis = [];
-    wings.forEach(wing => {
-        if (wing['emoji'].length > 0) {
-            emojis.push(wing['emoji']);
-        }
-    });
-    return emojis;
+function getWingEmojis(name = null) {
+    //Return all emojis
+    if(name === null) {
+        let emojis = [];
+        wings.forEach(wing => {
+            if (wing['emoji'].length > 0) {
+                emojis.push(wing['emoji']);
+            }
+        });
+        return emojis;
+    }
+    //Find the emoji of a select wing
+    else {
+        let emoji;
+        wings.forEach(wing => {
+            if (wing['emoji'].length > 0 && wing['name'] === name) {
+                emoji = wing['emoji'];
+            }
+        });
+        return emoji;
+    }
 }
 
 //#endregion
@@ -471,25 +488,49 @@ function postRaidSchedule(channel) {
         let wing1 = getCurrentWeek()['wings'][0];
         if (typeof (wing1) != "undefined" && wing1.name.length > 0) {
             wingNames += wing1.name;
-            wingDescriptions += wing1.name + "\n" + getWingByName(wing1.name)['description'];
+            if(getWingByName(wing1.name)['description'].length > 0) {
+                wingDescriptions += "\n\n **For " + wing1.name + ":** \n--------------------\n" + getWingByName(wing1.name)['description'];
+            }
         }
         let wing2 = getCurrentWeek()['wings'][1];
         if (typeof (wing2) != "undefined" && wing2.name.length > 0) {
             wingNames += ", " + wing2.name;
-            wingDescriptions += "\n\n" + wing2.name + "\n" + getWingByName(wing2.name)['description'];
+            if(getWingByName(wing2.name)['description'].length > 0) {
+                wingDescriptions += "\n\n **For " + wing2.name + ":** \n--------------------\n" + getWingByName(wing2.name)['description'];
+            }
         }
         let wing3 = getCurrentWeek()['wings'][2];
         if (typeof (wing3) != "undefined" && wing3.name.length > 0) {
             wingNames += " and " + wing3.name;
-            wingDescriptions += "\n\n" + wing3.name + "\n" + getWingByName(wing3.name)['description'];
+            if(getWingByName(wing3.name)['description'].length > 0) {
+                wingDescriptions += "\n\n **For " + wing3.name + ":** \n--------------------\n" + getWingByName(wing3.name)['description'];
+            }
         }
         let raidEmbed = new MessageEmbed()
             .setColor('#' + ("000000" + Math.random().toString(16).slice(2, 8).toUpperCase()).slice(-6))
-            .setTitle("Next week is week " + schedule['currentWeek'] + " of " + schedule['MaxWeeks'] + " (" + wingNames + ")")
+            .setTitle("Up next is week " + schedule['currentWeek'] + " of " + schedule['MaxWeeks'] + " (" + wingNames + ")")
             .setDescription(schedule['generalMessage'] + "\n\n" + wingDescriptions)
-            .addField('\u200b', 'And finally :no_entry_sign: if something urgent comes up and you will not be here!', false)
+            //.addField('\u200b', 'React with :no_entry_sign: if something urgent comes up and you will not be here!', false)
+            .addField('\u200b', 'For our complete schedule see: https://docs.google.com/spreadsheets/d/1cWeluZe5bZW-HKzVG_i0akkBafhQVkmPthtkOd5JqWo/edit#gid=580644204', false)
             .setTimestamp();
-        channel.send({embeds: [raidEmbed]});
+        channel.send({embeds: [raidEmbed]})
+
+            //NOT WORKING YET
+
+            /*
+            .then(message => {
+            message.awaitReactions({absentFilter, max: 1})
+                .then(collected => {
+                    const reaction = collected.first();
+                    console.log("collected: " + reaction.emoji.name)
+                    //if (reaction.emoji.name === '🚫') {
+                        console.log("Someone is absent!");
+                        client.users.cache.get(config['AdministratorId']).send('Someone signed off on raids next week :(');
+                    //}
+                })
+            })
+             */
+
         /*
         .then(message => {
             message.awaitReactions({max: 1})

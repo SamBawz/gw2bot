@@ -7,5 +7,6 @@
   "reminderChannel": "901927614380380210",
   "postFractalEvents": false,
   "postRaidSchedule": false,
-  "postAssReminders": false
+  "postAssReminders": false,
+  "AdministratorId" : "151812227178037248"
 }
